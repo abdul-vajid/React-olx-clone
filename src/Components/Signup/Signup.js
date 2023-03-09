@@ -1,5 +1,6 @@
-import React, { useState, useContext } from 'react';
+import React, { useState} from 'react';
 import { UserAuth } from '../../context/AuthContext';
+import {useNavigate } from 'react-router-dom'
 import Logo from '../../olx-logo.png';
 import './Signup.css';
 
@@ -9,22 +10,23 @@ function Signup() {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const {user, signUp} = UserAuth()
+  const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      await signUp(email, password)
+      await signUp(email, password, username, phone)
+      navigate('/')
     } catch (error){
       console.log(error)
     }
-    
   }
 
   return (
     <div>
       <div className="signupParentDiv">
         <img width="200px" height="200px" src={Logo}></img>
-        <form onSubmit={(e)=>handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <label htmlFor="fname">Username</label>
           <br />
           <input
@@ -33,7 +35,6 @@ function Signup() {
             id="fname"
             name="name"
             placeholder="John"
-            value={username}
             onChange={(e)=>setUsername(e.target.value)}
           />
           <br />
@@ -45,7 +46,6 @@ function Signup() {
             id="fname"
             name="email"
             placeholder="jhon@example.com"
-            value={email}
             onChange={(e)=>setEmail(e.target.value)}
           />
           <br />
@@ -57,7 +57,6 @@ function Signup() {
             id="lname"
             name="phone"
             placeholder="9876543210"
-            value={phone}
             onChange={(e)=>setPhone(e.target.value)}
           />
           <br />
@@ -69,7 +68,6 @@ function Signup() {
             id="lname"
             name="password"
             placeholder='********'
-            value={password}
             onChange={(e)=>setPassword(e.target.value)}
           />
           <br />
