@@ -5,18 +5,20 @@ import Logo from '../../olx-logo.png';
 import './Login.css';
 import { async } from '@firebase/util';
 import ErrorAlert from '../ErrorAlert/ErrorAlert';
+import Loading from '../loading/loading';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errMsg, setErrMsg] = useState('');
+  const [isLoading, setIsloading] = useState(false);
   const [showErr, setShowErr] = useState(false)
   const {user, logIn} = UserAuth()
   const navigate = useNavigate()
 
-
   const handleSubmit = async(e) => {
     e.preventDefault()
+
     try {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if(email === '' || email === undefined || email === null){
@@ -32,11 +34,14 @@ function Login() {
         setShowErr(true)
         return false
       } else {
+        setIsloading(true);
         await logIn(email, password)
-        setShowErr(true)
+        setIsloading(false);
+        setShowErr(false)
         navigate('/')
       }
     } catch (error) {
+      setIsloading(false);
       if(error.code == 'auth/wrong-password'){
         setErrMsg('The password you entered is incorrect')
       } else if (error.code == 'auth/user-not-found') {
@@ -47,7 +52,7 @@ function Login() {
       setShowErr(true)
     }
   }
-
+  
   useEffect(() => {
     const timer = setTimeout(() => {
       showErr && setShowErr(false)
@@ -60,6 +65,9 @@ function Login() {
     <div>
       <div className="loginParentDiv">
         <img width="200px" height="200px" src={Logo}></img>
+        {
+          isLoading && <Loading/>
+        }
         {
           showErr && <ErrorAlert errMsg = {errMsg}/>
         }

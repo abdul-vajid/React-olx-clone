@@ -13,6 +13,14 @@
   align-items: center;
 }
 
+.logout{
+ cursor: pointer; 
+}
+
+.logout :hover{
+ color: #3a77ff; 
+}
+
 .placeSearch {
   width: 16em;
   height: 48px;

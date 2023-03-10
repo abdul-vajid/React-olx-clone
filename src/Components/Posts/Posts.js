@@ -1,10 +1,12 @@
-import React from 'react';
+import React, {useEffect, useContext} from 'react';
 
 import Heart from '../../assets/Heart';
+import { useAdsList } from '../../context/productList';
 import './Post.css';
 
 function Posts() {
-
+  const ads = useAdsList()
+  console.log(ads)
   return (
     <div className="postParentDiv">
       <div className="moreView">
