@@ -2,12 +2,15 @@ import React from 'react'
 
 import Header from '../Components/Header/Header'
 import View from '../Components/View/View'
+import { AdsListContextProvider } from '../context/productList'
 
 function ViewPost(props) {
     return (
         <div>
-            <Header />
-            <View/>
+            <AdsListContextProvider>
+                <Header />
+                <View />
+            </AdsListContextProvider>
         </div>
     )
 }

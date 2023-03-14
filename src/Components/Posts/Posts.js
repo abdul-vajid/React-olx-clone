@@ -1,12 +1,20 @@
-import React, {useEffect, useContext} from 'react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import Heart from '../../assets/Heart';
 import { useAdsList } from '../../context/productList';
 import './Post.css';
 
 function Posts() {
-  const ads = useAdsList()
-  console.log(ads)
+  const {ads, viwProductDetail} = useAdsList()
+  const navigate = useNavigate()
+
+  const clickOnPost = (ad)=> {
+    console.log(ad, 'ad')
+    viwProductDetail(ad)
+    navigate('/detailedview')
+  }
+
   return (
     <div className="postParentDiv">
       <div className="moreView">
@@ -15,47 +23,25 @@ function Posts() {
           <span>View more</span>
         </div>
         <div className="cards">
-          <div
-            className="card"
-          >
-            <div className="favorite">
-              <Heart></Heart>
+          {
+            ads.map(ad=> {
+              return <div onClick={()=>{clickOnPost(ad)}}
+              className="card"
+            >
+              <div className="favorite">
+                <Heart></Heart>
+              </div>
+              <div className="image">
+                <img src={ad.imageUrl} alt="" />
+              </div>
+              <div className="content">
+                <p className="rate">&#x20B9; {ad.price}</p>
+                <span className="kilometer">{ad.name}</span>
+                <p className="name">{ad.category}</p>
+              </div>
             </div>
-            <div className="image">
-              <img src="../../../Images/R15V3.jpg" alt="" />
-            </div>
-            <div className="content">
-              <p className="rate">&#x20B9; 250000</p>
-              <span className="kilometer">Two Wheeler</span>
-              <p className="name"> YAMAHA R15V3</p>
-            </div>
-            <div className="date">
-              <span>Tue May 04 2021</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="recommendations">
-        <div className="heading">
-          <span>Fresh recommendations</span>
-        </div>
-        <div className="cards">
-          <div className="card">
-            <div className="favorite">
-              <Heart></Heart>
-            </div>
-            <div className="image">
-              <img src="../../../Images/R15V3.jpg" alt="" />
-            </div>
-            <div className="content">
-              <p className="rate">&#x20B9; 250000</p>
-              <span className="kilometer">Two Wheeler</span>
-              <p className="name"> YAMAHA R15V3</p>
-            </div>
-            <div className="date">
-              <span>10/5/2021</span>
-            </div>
-          </div>
+            })
+          }
         </div>
       </div>
     </div>

@@ -1,7 +1,9 @@
 import React from 'react';
+import { useAdsList } from '../../context/productList';
 
 import './View.css';
 function View() {
+  const {productDetail} = useAdsList()
   return (
     <div className="viewParentDiv">
       <div className="imageShowDiv">
@@ -12,10 +14,9 @@ function View() {
       </div>
       <div className="rightSection">
         <div className="productDetails">
-          <p>&#x20B9; 250000 </p>
-          <span>YAMAHA R15V3</span>
-          <p>Two Wheeler</p>
-          <span>Tue May 04 2021</span>
+          <p>&#x20B9; {productDetail.price} </p>
+          <span>{productDetail.name}</span>
+          <p>{productDetail.category}</p>
         </div>
         <div className="contactDetails">
           <p>Seller details</p>

@@ -15,8 +15,8 @@ const Create = () => {
   const [errMsg, setErrMsg] = useState('');
   const [isLoading, setIsloading] = useState(false);
   const [showErr, setShowErr] = useState(false);
-  const {user} = UserAuth()
-  const {createNewAd} = useCreateAd()
+  const { user } = UserAuth()
+  const { createNewAd } = useCreateAd()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -39,15 +39,14 @@ const Create = () => {
         setErrMsg('Upload a valid image file (JPEG or PNG)');
         setShowErr(true);
         return false;
-      } else{
+      } else {
         setIsloading(true)
         setShowErr(false);
-        console.log('in esle block of handle submit');
         await createNewAd(user, name, category, price, image)
         setIsloading(false)
       }
     } catch (error) {
-      console.log(error, "error from handleSubmit's catch")
+      throw error
     }
   }
 
@@ -95,7 +94,7 @@ const Create = () => {
 
             <br />
             <input className='inputimg' type="file" onChange={(e) => { setImage(e.target.files[0]) }} />
-            <br/>
+            <br />
             {
               image && <img alt="Posts" width="200px" height="200px" src={image ? URL.createObjectURL(image) : ''}></img>
             }

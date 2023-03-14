@@ -1,25 +1,30 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { db } from '../firebase/config';
-import { collection } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 
 const AdsListContext = createContext([]);
 
 export const AdsListContextProvider = ({ children }) => {
   const [ads, setAds] = useState([]);
+  const [productDetail, setProductDetail] = useState({})
+
+  function viwProductDetail ({ad}){
+    console.log(ad, "ad")
+    if (ad) {
+      setProductDetail(ad)
+    }
+  }
 
   useEffect(() => {
     const fetchAds = async () => {
       try {
-        console.log(2);
-        const adsRef = collection(db, 'ads');
-        console.log(3);
-        const adsSnapshot = await adsRef.get();
-        const adsList = adsSnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        console.log(adsList, 'adslistfrom context');
-        setAds(adsList);
+        const collectionRef = collection(db, "ads")
+        const querySnapshot = await getDocs(collectionRef);
+        const fetchedAds = [];
+        querySnapshot.forEach((doc) => {
+          fetchedAds.push({ id: doc.id, ...doc.data() });
+        });
+        setAds(fetchedAds);
       } catch (error) {
         console.error(error);
       }
@@ -29,7 +34,9 @@ export const AdsListContextProvider = ({ children }) => {
   }, []);
 
   return (
-    <AdsListContext.Provider value={ads}>{children}</AdsListContext.Provider>
+    <AdsListContext.Provider value={{ads, productDetail, viwProductDetail, setProductDetail}}>
+      {children}
+    </AdsListContext.Provider>
   );
 };
 

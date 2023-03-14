@@ -22,7 +22,7 @@ export const CreateAdContextProvider = ({ children }) => {
       const adsCollectionRef = collection(db, 'ads');
       await addDoc(adsCollectionRef, adData);
     } catch (error) {
-      console.log(error, 'err from');
+      throw error
     }
   };
   return (
